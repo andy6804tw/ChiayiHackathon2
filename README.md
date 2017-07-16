@@ -19,13 +19,14 @@
 <a href="http://opendata.epa.gov.tw/Data/Contents/AQI/">空氣品質指標(AQI)</a><br>
 <a href="http://opendata.cwb.gov.tw/datalist">交通部中央氣象局</a><br>
 <a href="http://data.chiayi.gov.tw/opendata/dataset/metadata?oid=729e3dbe-bc48-49d3-9677-7fb8774096f8">嘉義市政府資料開放平台- 雲嘉嘉空氣盒子API</a><br>
+<a href="http://e-info.org.tw/taxonomy/term/258/allall?page0">環境資源中心-環境新聞</a><br>
 ### 自行建立的資料集:
 #### 說明:
 我們使用Node.js背景撈取行政院環境保護署的空氣品質指標(AQI)每小時的空氣數值，並可查詢近幾日來每天的AQI濃度
 <a href="https://github.com/andy6804tw/Node_Firebase">Node_Firebase Repositories</a><br>
 <a href="https://andy6804tw.github.io/Node_Firebase/OpenDataAQI.html">資料存取網址</a><br>
 
-<img src="app/src/main/res/mipmap-xhdpi/icon.png" width="100">
+<img src="App/app/src/main/res/mipmap-xhdpi/icon.png" width="100">
 空汙小幫手
 
 <a href="https://icons8.com/icon/12128/Facepalm">Facepalm icon credits</a><br>
