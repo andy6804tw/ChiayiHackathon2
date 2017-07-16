@@ -1,0 +1,882 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>AQI</title>
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src='https://mokokai.tk/changeBackground.js'></script>
+    <script src='https://mokokai.tk/backtohome.js'></script>
+    <script src="https://webduino.io/components/webduino-js/dist/webduino-all.min.js"></script>
+    <script src="https://blockly.webduino.io/webduino-blockly.js"></script>
+    <script src="https://blockly.webduino.io/lib/firebase.js"></script>
+    <script src="https://blockly.webduino.io/lib/runtime.min.js"></script>
+    <style>
+        body {
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        
+        td {
+            size: 150%;
+            color: white;
+        }
+        
+        h1,
+        h5 {
+            width: 20%;
+            background-color: black;
+            color: white;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+<script>
+    var data = [];
+    var today, y, mo, d, t, h, m, s, ref;
+    var sel_index, sel_value;
+    //變數 
+    var rgbled;
+    var resultAQI;
+    //Location
+    var mCountry;
+    var mCity;
+    var mCity2;
+    var region;
+    var lining;
+    //wind
+    var chill;
+    var direction;
+    var speed;
+    //Atmosphere
+    var humidity;
+    var pressure;
+    var rising;
+    var visibility;
+    //Astronomy
+    var sunrise;
+    var sunset;
+    //Condition
+    var date;
+    var day;
+    var high;
+    var low;
+    var temp;
+    var code;
+    var pushTime;
+    var publish_time;
+    var url2 = '';
+    var alreadyspeech2 = false;
+
+    //語音辨識用
+    var city = {
+        1: "基隆",
+        2: "台北",
+        3: "新北",
+        4: "桃園",
+        5: "新竹",
+        6: "苗栗",
+        7: "台中",
+        8: "南投",
+        9: "彰化",
+        10: "雲林",
+        11: "嘉義",
+        12: "台南",
+        13: "高雄",
+        14: "屏東",
+        15: "Taitung",
+        16: "花蓮",
+        17: "宜蘭",
+        18: "金門",
+        19: '澎湖',
+        20: "連江"
+    };
+    //抓資料需要用經緯度
+    var citygps = {
+        1: '25.1240262,121.6470147',
+        2: '25.0169639,121.2261862',
+        3: '24.9861571,121.3645577',
+        4: '24.8545491,120.9519978',
+        5: '24.6866905,120.892014',
+        6: '24.5147969,120.8026139',
+        7: '24.2198468,120.6756823',
+        8: '23.8405937,120.7023261',
+        9: '23.9919519,120.3300822',
+        10: '23.6735484,120.294506',
+        11: '23.4251135,120.257353',
+        12: '23.1226791,120.106233',
+        13: '22.6995937,120.1910021',
+        14: '22.3895348,120.0680055',
+        15: '22.7213708,120.6096737',
+        16: '23.7330573,120.8184708',
+        17: '24.648688,121.3611287',
+        18: '24.4458333,118.3739224',
+        19: '23.629355,119.4569846',
+        20: '26.1564702,119.9239349'
+    };
+
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyB8uBoHMmnwYj8CBPBGyquKhZu0xCWNDmg",
+        authDomain: "test-cafb0.firebaseapp.com",
+        databaseURL: "https://test-cafb0.firebaseio.com",
+        projectId: "test-cafb0",
+        storageBucket: "test-cafb0.appspot.com",
+        messagingSenderId: "31977119796"
+    };
+    firebase.initializeApp(config);
+
+    function getdataAQI(i) {
+        $.ajax({
+            url: "http://opendata.epa.gov.tw/ws/Data/REWIQA/?$orderby=County&$skip=0&$top=1000&format=json",
+            dataType: "jsonp",
+            success: function(response) {
+                resultAQI = response[i].Status;
+                console.log("1:" + resultAQI);
+                if (resultAQI == '良好') {
+                    rgbled.setColor('#009900');
+                    console.log('green')
+                } else if (resultAQI == '普通') {
+                    rgbled.setColor('#ffcc66');
+                    console.log('yellow')
+                } else if (resultAQI == '設備維護') {
+                    rgbled.setColor('#bb00ff');
+                    console.log('purple')
+                } else {
+                    rgbled.setColor('#ff0000');
+                    console.log('red');
+                }
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
+    }
+
+    function change() {
+        sel_index = document.getElementById('select').selectedIndex;
+        sel_value = document.getElementById('select').options[sel_index].value;
+        if (sel_value == 0) {
+            window.location.href = 'http://mokokai.tk/AQI.html';
+        } else if (sel_value == 1) {
+            window.location.href = 'http://mokokai.tk/AQI_Ilan.html';
+        } else if (sel_value == 2) {
+            window.location.href = 'http://mokokai.tk/AQI_Hualien.html';
+        } else if (sel_value == 3) {
+            window.location.href = 'http://mokokai.tk/AQI_Kinmen.html';
+        } else if (sel_value == 4) {
+            window.location.href = 'http://mokokai.tk/AQI_Nantou.html';
+        } else if (sel_value == 5) {
+            window.location.href = 'http://mokokai.tk/AQI_Pingtung.html';
+        } else if (sel_value == 6) {
+            window.location.href = 'http://mokokai.tk/AQI_Miaoli.html';
+        } else if (sel_value == 7) {
+            window.location.href = 'http://mokokai.tk/AQI_Taoyuan.html';
+        } else if (sel_value == 8) {
+            window.location.href = 'http://mokokai.tk/AQI_Kaohsiung.html';
+        } else if (sel_value == 9) {
+            window.location.href = 'http://mokokai.tk/AQI_Keelung.html';
+        } else if (sel_value == 10) {
+            window.location.href = 'http://mokokai.tk/AQI_Lianjiang.html';
+        } else if (sel_value == 11) {
+            window.location.href = 'http://mokokai.tk/AQI_Yunlin.html';
+        } else if (sel_value == 12) {
+            window.location.href = 'http://mokokai.tk/AQI_NewTaipei.html';
+        } else if (sel_value == 13) {
+            window.location.href = 'http://mokokai.tk/AQI_Hsinchu.html';
+        } else if (sel_value == 14) {
+            window.location.href = 'http://mokokai.tk/AQI_Hsinchus.html';
+        } else if (sel_value == 15) {
+            window.location.href = 'http://mokokai.tk/AQI_Chiayi.html';
+        } else if (sel_value == 16) {
+            window.location.href = 'http://mokokai.tk/AQI_Chiayis.html';
+        } else if (sel_value == 17) {
+            window.location.href = 'http://mokokai.tk/AQI_Changhua.html';
+        } else if (sel_value == 18) {
+            window.location.href = 'http://mokokai.tk/AQI_Taichung.html';
+        } else if (sel_value == 19) {
+            window.location.href = 'http://mokokai.tk/AQI_Taipei.html';
+        } else if (sel_value == 20) {
+            window.location.href = 'http://mokokai.tk/AQI_Taitung.html';
+        } else if (sel_value == 21) {
+            window.location.href = 'http://mokokai.tk/AQI_Tainan.html';
+        } else if (sel_value == 22) {
+            window.location.href = 'http://mokokai.tk/AQI_Penghu.html';
+        }
+    }
+
+    boardReady({
+        device: 'WGEE'
+    }, function(board) {
+        board.systemReset();
+        board.samplingInterval = 20;
+        rgbled = getRGBLed(board, 6, 8, 7);
+    });
+
+    function StartAQIsppech() {
+        speak("您要查詢哪一個縣市的空氣", ["zh-TW", 1, 1, 1]);
+        setTimeout(function() {
+            AQIspeech()
+        }, 4000);
+    }
+
+    function AQIspeech() {
+        if (!("webkitSpeechRecognition" in window)) {
+            alert("本瀏覽器不支援語音辨識，請更換瀏覽器！(Chrome 25 版以上才支援語音辨識)");
+        } else {
+            recognition = new webkitSpeechRecognition();
+            window._recognition.continuous = false; //在辨識一段話完成之後就會結束辨識。
+            window._recognition.interimResults = true; //在我們講話的當下就會即時辨識
+            window._recognition.lang = "cmn-Hant-TW"; //語系
+
+            window._recognition.onstart = function() {
+                console.log("Start recognize...");
+                alreadyspeech2 = true;
+            };
+            window._recognition.onend = function() {
+                console.log("Stop recognize");
+            };
+
+            window._recognition.onresult = function(event, result) {
+                result = {};
+                result.resultLength = event.results.length - 1;
+                result.resultTranscript = event.results[result.resultLength][0].transcript;
+                if (event.results[result.resultLength].isFinal === true) {
+                    console.log(result.resultTranscript);
+                    for (var i in city) {
+                        if (result.resultTranscript == "台東") {
+                            result.resultTranscript = "Taitung"
+                        }
+                        if (result.resultTranscript.indexOf(city[i]) !== -1 && alreadyspeech2) { // 如果字串包含台灣'縣市'的話，回饋
+                            //基隆
+                            if (city[i] == city[1]) {
+                                getdataAQI(31);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //台北
+                            else if (city[i] == city[2]) {
+                                getdataAQI(62);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //新北
+                            else if (city[i] == city[3]) {
+                                getdataAQI(47);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //桃園
+                            else if (city[i] == city[4]) {
+                                getdataAQI(13);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            }
+                            //新竹
+                            else if (city[i] == city[5]) {
+                                getdataAQI(48);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //苗栗
+                            else if (city[i] == city[6]) {
+                                getdataAQI(11);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //台中
+                            else if (city[i] == city[7]) {
+                                getdataAQI(57);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //南投
+                            else if (city[i] == city[8]) {
+                                getdataAQI(6);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //彰化
+                            else if (city[i] == city[9]) {
+                                getdataAQI(54);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //雲林
+                            else if (city[i] == city[10]) {
+                                getdataAQI(34);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //嘉義
+                            else if (city[i] == city[11]) {
+                                getdataAQI(51);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //台南
+                            else if (city[i] == city[12]) {
+                                getdataAQI(74);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //高雄
+                            else if (city[i] == city[13]) {
+                                getdataAQI(27);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //屏東
+                            else if (city[i] == city[14]) {
+                                getdataAQI(7);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //台東
+                            else if (city[i] == city[15]) {
+                                getdataAQI(70);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //花蓮
+                            else if (city[i] == city[16]) {
+                                getdataAQI(2);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //宜蘭
+                            else if (city[i] == city[17]) {
+                                getdataAQI(0);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //金門
+                            else if (city[i] == city[18]) {
+                                getdataAQI(3);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //澎湖
+                            else if (city[i] == city[19]) {
+                                getdataAQI(75);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            } //連江
+                            else if (city[i] == city[20]) {
+                                getdataAQI(32);
+                                setTimeout(function() {
+                                    speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                                }, 6000);
+                                setTimeout(function() {
+                                    speak(city[i], ["zh-TW", 1, 1, 1]);
+                                }, 9000);
+                                setTimeout(function() {
+                                    speak('空氣品質為:', ["zh-TW", 1, 1, 1]);
+                                }, 12000);
+                                setTimeout(function() {
+                                    speak(resultAQI, ["zh-TW", 1, 1, 1]);
+                                    console.log("2:" + resultAQI);
+                                }, 15000);
+                                setTimeout(function() {
+                                    alreadyspeech2 = false;;
+                                }, 18000);
+                            }
+                            break;
+                        } else if (result.resultTranscript.indexOf(city[i]) === -1 && alreadyspeech2) {
+                            setTimeout(function() {
+                                speak('請說台灣的縣市優', ["zh-TW", 1, 1, 1]);
+                            }, 2000);
+                            setTimeout(function() {
+                                window._recognition.start();
+                            }, 4000);
+                        }
+                    }
+                } else if (event.results[result.resultLength].isFinal === false) {
+                    console.log("final");
+                }
+            };
+            if (window._recognition.start()) {
+                window._recognition.stop();
+            }
+            window._recognition.start();
+        }
+    }
+
+    function StartAirSpeech() {
+        speak("您要查詢哪一個縣市的天氣", ["zh-TW", 1, 1, 1]);
+        setTimeout(function() {
+            AIRspeech()
+        }, 4000);
+    }
+
+    function getdata() {
+        $.get(url, function(e) {
+            if (e.query.count == 1) { //如果有抓到count = 1
+                mCountry = e.query.results.channel.location.country;
+                mCity = e.query.results.channel.location.city;
+                direction = e.query.results.channel.wind.direction;
+                chill = e.query.results.channel.wind.chill;
+                speed = e.query.results.channel.wind.speed;
+                humidity = e.query.results.channel.atmosphere.humidity;
+                pressure = e.query.results.channel.atmosphere.pressure;
+                rising = e.query.results.channel.atmosphere.rising;
+                visibility = e.query.results.channel.atmosphere.visibility;
+                sunrise = e.query.results.channel.astronomy.sunrise;
+                sunset = e.query.results.channel.astronomy.sunset;
+                date = e.query.results.channel.item.forecast[0].date;
+                day = e.query.results.channel.item.forecast[0].day;
+                high = e.query.results.channel.item.forecast[0].high;
+                low = e.query.results.channel.item.forecast[0].low;
+                temp = e.query.results.channel.item.condition.temp;
+                code = e.query.results.channel.item.forecast[0].code;
+                pushTime = e.query.results.channel.item.pubDate;
+                publish_time = e.query.results.channel.lastBuildDate;
+            } else { //沒抓到直到抓到為止
+                getdata();
+            }
+        })
+    }
+
+    function AIRspeech() {
+        if (!("webkitSpeechRecognition" in window)) {
+            alert("本瀏覽器不支援語音辨識，請更換瀏覽器！(Chrome 25 版以上才支援語音辨識)");
+        } else {
+
+            recognition = new webkitSpeechRecognition();
+            window._recognition.continuous = false; //在辨識一段話完成之後就會結束辨識。
+            window._recognition.interimResults = true; //在我們講話的當下就會即時辨識
+            window._recognition.lang = "cmn-Hant-TW"; //語系
+
+            window._recognition.onstart = function() {
+                console.log("Start recognize...");
+                alreadyspeech2 = true;
+            };
+            window._recognition.onend = function() {
+                console.log("Stop recognize");
+            };
+
+            window._recognition.onresult = function(event, result) {
+                result = {};
+                result.resultLength = event.results.length - 1;
+                result.resultTranscript = event.results[result.resultLength][0].transcript;
+                if (event.results[result.resultLength].isFinal === true) {
+                    console.log(result.resultTranscript);
+                    for (var i in city) {
+                        if (result.resultTranscript == "台東") {
+                            result.resultTranscript = "Taitung"
+                        }
+                        if (result.resultTranscript.indexOf(city[i]) !== -1 && alreadyspeech2) { // 如果字串包含台灣'縣市'的話，回饋
+                            url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text=\"(" + citygps[i] + ")%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+                            getdata();
+                            setTimeout(function() {
+                                speak('您搜尋的位置為', ["zh-TW", 1, 1, 1]);
+                            }, 3000);
+                            setTimeout(function() {
+                                speak(city[i], ["zh-TW", 1, 1, 1]);
+                            }, 6000);
+                            setTimeout(function() {
+                                speak(['最高溫', Math.round((high - 32) * 5 / 9), '度', '最低溫', Math.round((low - 32) * 5 / 9), '度', '現在溫度', Math.round((temp - 32) * 5 / 9), '度', '濕度為', '百分之', humidity], ["zh-TW", 1, 1, 1]);
+                            }, 9000);
+                            setTimeout(function() {
+                                alreadyspeech2 = false;;
+                            }, 25000);
+                            break;
+                        } else if (result.resultTranscript.indexOf(city[i]) === -1 && alreadyspeech2) {
+                            setTimeout(function() {
+                                speak('請說台灣的縣市優', ["zh-TW", 1, 1, 1]);
+                            }, 2000);
+                            setTimeout(function() {
+                                window._recognition.start();
+                            }, 4000);
+                        }
+                    }
+                } else if (event.results[result.resultLength].isFinal === false) {
+                    console.log("final");
+                }
+            };
+            if (window._recognition.start()) {
+                window._recognition.stop();
+            }
+            window._recognition.start();
+        }
+    }
+
+    function askspeech() {
+        speak("請問需要什麼樣的服務呢?", ["zh-TW", 1, 1, 1]);
+        setTimeout(function() {
+            choosespeech()
+        }, 3000);
+    }
+
+    function choosespeech() {
+        if (!("webkitSpeechRecognition" in window)) {
+            alert("本瀏覽器不支援語音辨識，請更換瀏覽器！(Chrome 25 版以上才支援語音辨識)");
+        } else {
+            window._recognition = new webkitSpeechRecognition();
+            window._recognition.continuous = false; //在辨識一段話完成之後就會結束辨識。
+            window._recognition.interimResults = true; //在我們講話的當下就會即時辨識
+            window._recognition.lang = "cmn-Hant-TW"; //語系
+
+            window._recognition.onstart = function() {
+                console.log("Start recognize...");
+                alreadyspeech = true;
+            };
+
+            window._recognition.onend = function() {
+                console.log("Stop recognize");
+            };
+
+
+            window._recognition.onresult = function(event, result) {
+                result = {};
+                result.resultLength = event.results.length - 1;
+                result.resultTranscript = event.results[result.resultLength][0].transcript;
+                if (event.results[result.resultLength].isFinal === true) {
+                    console.log(result.resultTranscript);
+                    if (result.resultTranscript.indexOf("天氣") !== -1) {
+                        StartAirSpeech();
+                        AIRspeech();
+                    } else if (result.resultTranscript.indexOf("空氣") !== -1) {
+                        StartAQIsppech();
+                        AQIspeech();
+                    }
+                } else if (event.results[result.resultLength].isFinal === false) {
+                    console.log("final");
+                }
+            };
+            if (window._recognition.start()) {
+                window._recognition.stop();
+            }
+            window._recognition.start();
+        }
+    }
+</script>
+
+<body onload="change_background();">
+    <div>
+        <form id='form1' align='center' name='form1'>
+            <select id='select' onchange="change()">
+        <option value="0" selected="true">請選取城市</option>
+        <option value="1">宜蘭縣</option>
+        <option value="2">花蓮縣</option>
+        <option value="3">金門縣</option>
+        <option value="4">南投縣</option>
+        <option value="5">屏東縣</option>
+        <option value="6">苗栗縣</option>
+        <option value="7">桃園市</option>
+        <option value="8">高雄市</option>
+        <option value="9">基隆市</option>
+        <option value="10">連江縣</option>
+        <option value="11">雲林縣</option>
+        <option value="12">新北市</option>
+        <option value="13">新竹市</option>
+        <option value="14">新竹縣</option>
+        <option value="15">嘉義市</option>
+        <option value="16">嘉義縣</option>
+        <option value="17">彰化縣</option>
+        <option value="18">臺中市</option>
+        <option value="19">臺北市</option>
+        <option value="20">臺東縣</option>
+        <option value="21">臺南市</option>
+        <option value="22">澎湖縣</option>
+      </select>
+        </form>
+        <div align='center'><img src='https://mokokai.tk/home.png' onclick="backtohome();" width='40' height="40"></img>
+            <h1>請選擇城市</h1>
+            <font color='white'>
+                <h5>您目前的位置為:嘉義
+                    <h5>
+            </font>
+        </div>
+        <center><iframe src="https://plotdb.io/v/chart/14112" width="100%" height="600px" allowfullscreen="true" frameborder="0"></iframe></center>
+    </div>
+    <dvi align='center'>
+        <button id='ask' onclick="askspeech();">詢問</button>
+    </dvi>
+    <div>
+        <table id='table1' align="center" style="padding:10px;background-color:black;opacity:0.6;" CellSpacing="8" CellPadding="8">
+            <tr>
+                <td align="center">測站名稱</td>
+                <td align="center">空氣品質指標</td>
+                <td align="center">空氣汙染指標物</td>
+                <td align="center">狀態</td>
+                <td align="center">二氧化硫</td>
+                <td align="center">一氧化碳<br>一氧化碳八小時移動平均</td>
+                <td align="center">風向<br>風速</td>
+                <td align="center">臭氧<br>臭氧八小時移動平均</td>
+                <td align="center">NO指數<br> <br>NOx指數</td>
+                <td align="center">PM2.5<br>PM2.5移動平均值</td>
+                <td align="center">PM10<br>PM10移動平均值</td>
+                <td align="center">資料建置時間</td>
+            </tr>
+            <tr>
+                <td id='SiteName_1' align="center"></td>
+                <td id='AQI_1' align="center"></td>
+                <td id='Pollutant_1' align="center"></td>
+                <td id='Status_1' align='center'></td>
+                <td id='SO2_1' align='center'></td>
+                <td id='CO_1' align="center"></td>
+                <td id='Wind_1' align="center"></td>
+                <td id='O3_1' align="center"></td>
+                <td id='NO_1' align="center"></td>
+                <td id='PM2.5_1' align="center"></td>
+                <td id='PM10_1' align="center"></td>
+                <td id='PublishTime_1' align="center"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

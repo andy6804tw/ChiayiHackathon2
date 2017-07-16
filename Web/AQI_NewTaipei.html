@@ -1,0 +1,467 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>AQI</title>
+  <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src='https://mokokai.tk/changeBackground.js'></script>
+  <script src='https://mokokai.tk/backtohome.js'></script>
+  <style>
+  body{
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  td{
+    size:150%;
+    color:white;
+  }
+  h1{
+    width:20%;
+    background-color: black;
+    color:white;
+    opacity:0.6;
+  }
+  </style>
+</head>
+<script>
+var result;
+$.ajax({
+  url: "http://opendata.epa.gov.tw/ws/Data/REWIQA/?$orderby=County&$skip=0&$top=1000&format=json",
+  dataType:"jsonp",
+  success: function(response){
+    result = response;
+    show();
+    console.log(response);
+  },
+  error: function(response){
+    console.log("error");
+  }
+});
+</script>
+<script>
+var sel_index,sel_value;
+ function change(){
+   sel_index = document.getElementById('select').selectedIndex;
+   sel_value = document.getElementById('select').options[sel_index].value;
+   if(sel_value == 0){
+       window.location.href='http://mokokai.tk/AQI.html';
+   }
+   else if(sel_value == 1){
+     window.location.href='http://mokokai.tk/AQI_Ilan.html';
+   }
+   else if(sel_value == 2){
+     window.location.href='http://mokokai.tk/AQI_Hualien.html';
+   }
+   else if(sel_value == 3){
+     window.location.href='http://mokokai.tk/AQI_Kinmen.html';
+   }
+   else if(sel_value == 4){
+     window.location.href='http://mokokai.tk/AQI_Nantou.html';
+   }
+   else if(sel_value == 5){
+     window.location.href='http://mokokai.tk/AQI_Pingtung.html';
+   }
+   else if(sel_value == 6){
+     window.location.href='http://mokokai.tk/AQI_Miaoli.html';
+   }
+   else if(sel_value == 7){
+     window.location.href='http://mokokai.tk/AQI_Taoyuan.html';
+   }
+   else if(sel_value == 8){
+     window.location.href='http://mokokai.tk/AQI_Kaohsiung.html';
+   }
+   else if(sel_value == 9){
+     window.location.href='http://mokokai.tk/AQI_Keelung.html';
+   }
+   else if(sel_value == 10){
+     window.location.href='http://mokokai.tk/AQI_Lianjiang.html';
+   }
+   else if(sel_value == 11){
+     window.location.href='http://mokokai.tk/AQI_Yunlin.html';
+   }
+   else if(sel_value == 12){
+     window.location.href='http://mokokai.tk/AQI_NewTaipei.html';
+   }
+   else if(sel_value == 13){
+     window.location.href='http://mokokai.tk/AQI_Hsinchu.html';
+   }
+   else if(sel_value == 14){
+     window.location.href='http://mokokai.tk/AQI_Hsinchus.html';
+   }
+   else if(sel_value == 15){
+     window.location.href='http://mokokai.tk/AQI_Chiayi.html';
+   }
+   else if(sel_value == 16){
+     window.location.href='http://mokokai.tk/AQI_Chiayis.html';
+   }
+   else if(sel_value == 17){
+     window.location.href='http://mokokai.tk/AQI_Changhua.html';
+   }
+   else if(sel_value == 18){
+     window.location.href='http://mokokai.tk/AQI_Taichung.html';
+   }
+   else if(sel_value == 19){
+     window.location.href='http://mokokai.tk/AQI_Taipei.html';
+   }
+   else if(sel_value == 20){
+     window.location.href='http://mokokai.tk/AQI_Taitung.html';
+   }
+   else if(sel_value == 21){
+     window.location.href='http://mokokai.tk/AQI_Tainan.html';
+   }
+   else if(sel_value == 22){
+     window.location.href='http://mokokai.tk/AQI_Penghu.html';
+   }
+ }
+function show(){
+          document.getElementById('SiteName_1').innerHTML = result[37].SiteName;
+          document.getElementById('SiteName_2').innerHTML = result[38].SiteName;
+          document.getElementById('SiteName_3').innerHTML = result[39].SiteName;
+          document.getElementById('SiteName_4').innerHTML = result[40].SiteName;
+          document.getElementById('SiteName_5').innerHTML = result[41].SiteName;
+          document.getElementById('SiteName_6').innerHTML = result[42].SiteName;
+          document.getElementById('SiteName_7').innerHTML = result[43].SiteName;
+          document.getElementById('SiteName_8').innerHTML = result[44].SiteName;
+          document.getElementById('SiteName_9').innerHTML = result[45].SiteName;
+          document.getElementById('SiteName_10').innerHTML = result[46].SiteName;
+          document.getElementById('SiteName_11').innerHTML = result[47].SiteName;
+          document.getElementById('AQI_1').innerHTML = result[37].AQI;
+          document.getElementById('AQI_2').innerHTML = result[38].AQI;
+          document.getElementById('AQI_3').innerHTML = result[39].AQI;
+          document.getElementById('AQI_4').innerHTML = result[40].AQI;
+          document.getElementById('AQI_5').innerHTML = result[41].AQI;
+          document.getElementById('AQI_6').innerHTML = result[42].AQI;
+          document.getElementById('AQI_7').innerHTML = result[43].AQI;
+          document.getElementById('AQI_8').innerHTML = result[44].AQI;
+          document.getElementById('AQI_9').innerHTML = result[45].AQI;
+          document.getElementById('AQI_10').innerHTML = result[46].AQI;
+          document.getElementById('AQI_11').innerHTML = result[47].AQI;
+          document.getElementById('Pollutant_1').innerHTML = result[37].Pollutant;
+          document.getElementById('Pollutant_2').innerHTML = result[38].Pollutant;
+          document.getElementById('Pollutant_3').innerHTML = result[39].Pollutant;
+          document.getElementById('Pollutant_4').innerHTML = result[40].Pollutant;
+          document.getElementById('Pollutant_5').innerHTML = result[41].Pollutant;
+          document.getElementById('Pollutant_6').innerHTML = result[42].Pollutant;
+          document.getElementById('Pollutant_7').innerHTML = result[43].Pollutant;
+          document.getElementById('Pollutant_8').innerHTML = result[44].Pollutant;
+          document.getElementById('Pollutant_9').innerHTML = result[45].Pollutant;
+          document.getElementById('Pollutant_10').innerHTML = result[46].Pollutant;
+          document.getElementById('Pollutant_11').innerHTML = result[47].Pollutant;
+          document.getElementById('Status_1').innerHTML = result[37].Status;
+          document.getElementById('Status_2').innerHTML = result[38].Status;
+          document.getElementById('Status_3').innerHTML = result[39].Status;
+          document.getElementById('Status_4').innerHTML = result[40].Status;
+          document.getElementById('Status_5').innerHTML = result[41].Status;
+          document.getElementById('Status_6').innerHTML = result[42].Status;
+          document.getElementById('Status_7').innerHTML = result[43].Status;
+          document.getElementById('Status_8').innerHTML = result[44].Status;
+          document.getElementById('Status_9').innerHTML = result[45].Status;
+          document.getElementById('Status_10').innerHTML = result[46].Status;
+          document.getElementById('Status_11').innerHTML = result[47].Status;
+          document.getElementById('SO2_1').innerHTML = result[37].SO2 + " ppb";
+          document.getElementById('SO2_2').innerHTML = result[38].SO2 + " ppb";
+          document.getElementById('SO2_3').innerHTML = result[39].SO2 + " ppb";
+          document.getElementById('SO2_4').innerHTML = result[40].SO2 + " ppb";
+          document.getElementById('SO2_5').innerHTML = result[41].SO2 + " ppb";
+          document.getElementById('SO2_6').innerHTML = result[42].SO2 + " ppb";
+          document.getElementById('SO2_7').innerHTML = result[43].SO2 + " ppb";
+          document.getElementById('SO2_8').innerHTML = result[44].SO2 + " ppb";
+          document.getElementById('SO2_9').innerHTML = result[45].SO2 + " ppb";
+          document.getElementById('SO2_10').innerHTML = result[46].SO2 + " ppb";
+          document.getElementById('SO2_11').innerHTML = result[47].SO2 + " ppb";
+          document.getElementById('CO_1').innerHTML = result[37].CO + ' ppm<br/>0' + result[37].CO_8hr + ' ppm' ;
+          document.getElementById('CO_2').innerHTML = result[38].CO + ' ppm<br/>0' + result[38].CO_8hr + ' ppm' ;
+          document.getElementById('CO_3').innerHTML = result[39].CO + ' ppm<br/>0' + result[39].CO_8hr + ' ppm' ;
+          document.getElementById('CO_4').innerHTML = result[40].CO + ' ppm<br/>0' + result[40].CO_8hr + ' ppm' ;
+          document.getElementById('CO_5').innerHTML = result[41].CO + ' ppm<br/>0' + result[41].CO_8hr + ' ppm' ;
+          document.getElementById('CO_6').innerHTML = result[42].CO + ' ppm<br/>0' + result[42].CO_8hr + ' ppm' ;
+          document.getElementById('CO_7').innerHTML = result[43].CO + ' ppm<br/>0' + result[43].CO_8hr + ' ppm' ;
+          document.getElementById('CO_8').innerHTML = result[44].CO + ' ppm<br/>0' + result[44].CO_8hr + ' ppm' ;
+          document.getElementById('CO_9').innerHTML = result[45].CO + ' ppm<br/>0' + result[45].CO_8hr + ' ppm' ;
+          document.getElementById('CO_10').innerHTML = result[46].CO + ' ppm<br/>0' + result[46].CO_8hr + ' ppm' ;
+          document.getElementById('CO_11').innerHTML = result[47].CO + ' ppm<br/>0' + result[47].CO_8hr + ' ppm' ;
+          document.getElementById('Wind_1').innerHTML = result[37].WindDirec + ' degrees<br/>' + result[37].WindSpeed + ' m/sec';
+          document.getElementById('Wind_2').innerHTML = result[38].WindDirec + ' degrees<br/>' + result[38].WindSpeed + ' m/sec';
+          document.getElementById('Wind_3').innerHTML = result[39].WindDirec + ' degrees<br/>' + result[39].WindSpeed + ' m/sec';
+          document.getElementById('Wind_4').innerHTML = result[40].WindDirec + ' degrees<br/>' + result[40].WindSpeed + ' m/sec';
+          document.getElementById('Wind_5').innerHTML = result[41].WindDirec + ' degrees<br/>' + result[41].WindSpeed + ' m/sec';
+          document.getElementById('Wind_6').innerHTML = result[42].WindDirec + ' degrees<br/>' + result[42].WindSpeed + ' m/sec';
+          document.getElementById('Wind_7').innerHTML = result[43].WindDirec + ' degrees<br/>' + result[43].WindSpeed + ' m/sec';
+          document.getElementById('Wind_8').innerHTML = result[44].WindDirec + ' degrees<br/>' + result[44].WindSpeed + ' m/sec';
+          document.getElementById('Wind_9').innerHTML = result[45].WindDirec + ' degrees<br/>' + result[45].WindSpeed + ' m/sec';
+          document.getElementById('Wind_10').innerHTML = result[46].WindDirec + ' degrees<br/>' + result[46].WindSpeed + ' m/sec';
+          document.getElementById('Wind_11').innerHTML = result[47].WindDirec + ' degrees<br/>' + result[47].WindSpeed + ' m/sec';
+          document.getElementById('O3_1').innerHTML = result[37].O3 + ' ppb<br/>' + result[37].O3_8hr + ' ppb';
+          document.getElementById('O3_2').innerHTML = result[38].O3 + ' ppb<br/>' + result[38].O3_8hr + ' ppb';
+          document.getElementById('O3_3').innerHTML = result[39].O3 + ' ppb<br/>' + result[39].O3_8hr + ' ppb';
+          document.getElementById('O3_4').innerHTML = result[40].O3 + ' ppb<br/>' + result[40].O3_8hr + ' ppb';
+          document.getElementById('O3_5').innerHTML = result[41].O3 + ' ppb<br/>' + result[41].O3_8hr + ' ppb';
+          document.getElementById('O3_6').innerHTML = result[42].O3 + ' ppb<br/>' + result[42].O3_8hr + ' ppb';
+          document.getElementById('O3_7').innerHTML = result[43].O3 + ' ppb<br/>' + result[43].O3_8hr + ' ppb';
+          document.getElementById('O3_8').innerHTML = result[44].O3 + ' ppb<br/>' + result[44].O3_8hr + ' ppb';
+          document.getElementById('O3_9').innerHTML = result[45].O3 + ' ppb<br/>' + result[45].O3_8hr + ' ppb';
+          document.getElementById('O3_10').innerHTML = result[46].O3 + ' ppb<br/>' + result[46].O3_8hr + ' ppb';
+          document.getElementById('O3_11').innerHTML = result[47].O3 + ' ppb<br/>' + result[47].O3_8hr + ' ppb';
+          document.getElementById('NO_1').innerHTML = result[37].NO + ' ppb<br/>' + result[37].NO2 + ' ppb<br/>' + result[37].NOx + ' ppb';
+          document.getElementById('NO_2').innerHTML = result[38].NO + ' ppb<br/>' + result[38].NO2 + ' ppb<br/>' + result[38].NOx + ' ppb';
+          document.getElementById('NO_3').innerHTML = result[39].NO + ' ppb<br/>' + result[39].NO2 + ' ppb<br/>' + result[39].NOx + ' ppb';
+          document.getElementById('NO_4').innerHTML = result[40].NO + ' ppb<br/>' + result[40].NO2 + ' ppb<br/>' + result[40].NOx + ' ppb';
+          document.getElementById('NO_5').innerHTML = result[41].NO + ' ppb<br/>' + result[41].NO2 + ' ppb<br/>' + result[41].NOx + ' ppb';
+          document.getElementById('NO_6').innerHTML = result[42].NO + ' ppb<br/>' + result[42].NO2 + ' ppb<br/>' + result[42].NOx + ' ppb';
+          document.getElementById('NO_7').innerHTML = result[43].NO + ' ppb<br/>' + result[43].NO2 + ' ppb<br/>' + result[43].NOx + ' ppb';
+          document.getElementById('NO_8').innerHTML = result[44].NO + ' ppb<br/>' + result[44].NO2 + ' ppb<br/>' + result[44].NOx + ' ppb';
+          document.getElementById('NO_9').innerHTML = result[45].NO + ' ppb<br/>' + result[45].NO2 + ' ppb<br/>' + result[45].NOx + ' ppb';
+          document.getElementById('NO_10').innerHTML = result[46].NO + ' ppb<br/>' + result[46].NO2 + ' ppb<br/>' + result[46].NOx + ' ppb';
+          document.getElementById('NO_11').innerHTML = result[47].NO + ' ppb<br/>' + result[47].NO2 + ' ppb<br/>' + result[47].NOx + ' ppb';
+          document.getElementById('PM2.5_1').innerHTML = Object.getOwnPropertyDescriptor(result[37], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[37], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM2.5_2').innerHTML = Object.getOwnPropertyDescriptor(result[38], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[38], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM2.5_3').innerHTML = Object.getOwnPropertyDescriptor(result[39], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[39], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM2.5_4').innerHTML = Object.getOwnPropertyDescriptor(result[40], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[40], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM2.5_5').innerHTML = Object.getOwnPropertyDescriptor(result[41], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[41], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM2.5_6').innerHTML = Object.getOwnPropertyDescriptor(result[42], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[42], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM2.5_7').innerHTML = Object.getOwnPropertyDescriptor(result[43], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[43], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM2.5_8').innerHTML = Object.getOwnPropertyDescriptor(result[44], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[44], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM2.5_9').innerHTML = Object.getOwnPropertyDescriptor(result[45], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[45], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM2.5_10').innerHTML = Object.getOwnPropertyDescriptor(result[46], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[46], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM2.5_11').innerHTML = Object.getOwnPropertyDescriptor(result[47], "PM2.5").value +' μg/m3<br/>'
+            + Object.getOwnPropertyDescriptor(result[47], "PM2.5_AVG").value + ' μg/m3';
+          document.getElementById('PM10_1').innerHTML = result[37].PM10 + ' μg/m3<br/>' + result[37].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PM10_2').innerHTML = result[38].PM10 + ' μg/m3<br/>' + result[38].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PM10_3').innerHTML = result[39].PM10 + ' μg/m3<br/>' + result[39].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PM10_4').innerHTML = result[40].PM10 + ' μg/m3<br/>' + result[40].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PM10_5').innerHTML = result[41].PM10 + ' μg/m3<br/>' + result[41].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PM10_6').innerHTML = result[42].PM10 + ' μg/m3<br/>' + result[42].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PM10_7').innerHTML = result[43].PM10 + ' μg/m3<br/>' + result[43].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PM10_8').innerHTML = result[44].PM10 + ' μg/m3<br/>' + result[44].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PM10_9').innerHTML = result[45].PM10 + ' μg/m3<br/>' + result[45].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PM10_10').innerHTML = result[46].PM10 + ' μg/m3<br/>' + result[46].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PM10_11').innerHTML = result[47].PM10 + ' μg/m3<br/>' + result[47].PM10_AVG + ' μg/m3 ';
+          document.getElementById('PublishTime_1').innerHTML = result[37].PublishTime;
+          document.getElementById('PublishTime_2').innerHTML = result[38].PublishTime;
+          document.getElementById('PublishTime_3').innerHTML = result[39].PublishTime;
+          document.getElementById('PublishTime_4').innerHTML = result[40].PublishTime;
+          document.getElementById('PublishTime_5').innerHTML = result[41].PublishTime;
+          document.getElementById('PublishTime_6').innerHTML = result[42].PublishTime;
+          document.getElementById('PublishTime_7').innerHTML = result[43].PublishTime;
+          document.getElementById('PublishTime_8').innerHTML = result[44].PublishTime;
+          document.getElementById('PublishTime_9').innerHTML = result[45].PublishTime;
+          document.getElementById('PublishTime_10').innerHTML = result[46].PublishTime;
+          document.getElementById('PublishTime_11').innerHTML = result[47].PublishTime;
+          }
+</script>
+<body onload="change_background();">
+  <div>
+    <form id = 'form1' align = 'center'>
+      <select id = 'select' onchange="change()">
+        <option value="0">請選取城市</option>
+        <option value="1">宜蘭縣</option>
+        <option value="2">花蓮縣</option>
+        <option value="3">金門縣</option>
+        <option value="4">南投縣</option>
+        <option value="5">屏東縣</option>
+        <option value="6">苗栗縣</option>
+        <option value="7">桃園市</option>
+        <option value="8">高雄市</option>
+        <option value="9">基隆市</option>
+        <option value="10">連江縣</option>
+        <option value="11">雲林縣</option>
+        <option value="12" selected="true">新北市</option>
+        <option value="13">新竹市</option>
+        <option value="14">新竹縣</option>
+        <option value="15">嘉義市</option>
+        <option value="16">嘉義縣</option>
+        <option value="17">彰化縣</option>
+        <option value="18">臺中市</option>
+        <option value="19">臺北市</option>
+        <option value="20">臺東縣</option>
+        <option value="21">臺南市</option>
+        <option value="22">澎湖縣</option>
+      </select>
+    </form>
+    <div align ='center'><img src = 'http://mokokai.tk/home.png' onclick="backtohome();" width='40' height="40"></img><h1>新北市</h1></div>
+  </div>
+  <div>
+    <table id = 'table1' align="center" style="padding:10px;background-color:black;opacity:0.6;" CellSpacing="8" CellPadding="8">
+      <tr>
+        <td align="center">測站名稱</td>
+        <td align="center">空氣品質指標</td>
+        <td align="center">空氣汙染指標物</td>
+        <td align="center">狀態</td>
+        <td align="center">二氧化硫</td>
+        <td align="center">一氧化碳<br>一氧化碳八小時移動平均</td>
+        <td align="center">風向<br>風速</td>
+        <td align="center">臭氧<br>臭氧八小時移動平均</td>
+        <td align="center">NO指數<br>NO2指數<br>NOx指數</td>
+        <td align="center">PM2.5<br>PM2.5移動平均值</td>
+        <td align="center">PM10<br>PM10移動平均值</td>
+        <td align="center">資料建置時間</td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_1' align="center"></td>
+        <td id = 'AQI_1' align="center"></td>
+        <td id = 'Pollutant_1' align="center"></td>
+        <td id = 'Status_1' align='center'></td>
+        <td id = 'SO2_1' align='center'></td>
+        <td id = 'CO_1' align="center"></td>
+        <td id = 'Wind_1' align="center"></td>
+        <td id = 'O3_1' align="center"></td>
+        <td id = 'NO_1' align="center"></td>
+        <td id = 'PM2.5_1' align="center"></td>
+        <td id = 'PM10_1' align="center"></td>
+        <td id = 'PublishTime_1' align="center"></td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_2' align="center"></td>
+        <td id = 'AQI_2' align="center"></td>
+        <td id = 'Pollutant_2' align="center"></td>
+        <td id = 'Status_2' align='center'></td>
+        <td id = 'SO2_2' align='center'></td>
+        <td id = 'CO_2' align="center"></td>
+        <td id = 'Wind_2' align="center"></td>
+        <td id = 'O3_2' align="center"></td>
+        <td id = 'NO_2' align="center"></td>
+        <td id = 'PM2.5_2' align="center"></td>
+        <td id = 'PM10_2' align="center"></td>
+        <td id = 'PublishTime_2' align="center"></td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_3' align="center"></td>
+        <td id = 'AQI_3' align="center"></td>
+        <td id = 'Pollutant_3' align="center"></td>
+        <td id = 'Status_3' align='center'></td>
+        <td id = 'SO2_3' align='center'></td>
+        <td id = 'CO_3' align="center"></td>
+        <td id = 'Wind_3' align="center"></td>
+        <td id = 'O3_3' align="center"></td>
+        <td id = 'NO_3' align="center"></td>
+        <td id = 'PM2.5_3' align="center"></td>
+        <td id = 'PM10_3' align="center"></td>
+        <td id = 'PublishTime_3' align="center"></td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_4' align="center"></td>
+        <td id = 'AQI_4' align="center"></td>
+        <td id = 'Pollutant_4' align="center"></td>
+        <td id = 'Status_4' align='center'></td>
+        <td id = 'SO2_4' align='center'></td>
+        <td id = 'CO_4' align="center"></td>
+        <td id = 'Wind_4' align="center"></td>
+        <td id = 'O3_4' align="center"></td>
+        <td id = 'NO_4' align="center"></td>
+        <td id = 'PM2.5_4' align="center"></td>
+        <td id = 'PM10_4' align="center"></td>
+        <td id = 'PublishTime_4' align="center"></td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_5' align="center"></td>
+        <td id = 'AQI_5' align="center"></td>
+        <td id = 'Pollutant_5' align="center"></td>
+        <td id = 'Status_5' align='center'></td>
+        <td id = 'SO2_5' align='center'></td>
+        <td id = 'CO_5' align="center"></td>
+        <td id = 'Wind_5' align="center"></td>
+        <td id = 'O3_5' align="center"></td>
+        <td id = 'NO_5' align="center"></td>
+        <td id = 'PM2.5_5' align="center"></td>
+        <td id = 'PM10_5' align="center"></td>
+        <td id = 'PublishTime_5' align="center"></td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_6' align="center"></td>
+        <td id = 'AQI_6' align="center"></td>
+        <td id = 'Pollutant_6' align="center"></td>
+        <td id = 'Status_6' align='center'></td>
+        <td id = 'SO2_6' align='center'></td>
+        <td id = 'CO_6' align="center"></td>
+        <td id = 'Wind_6' align="center"></td>
+        <td id = 'O3_6' align="center"></td>
+        <td id = 'NO_6' align="center"></td>
+        <td id = 'PM2.5_6' align="center"></td>
+        <td id = 'PM10_6' align="center"></td>
+        <td id = 'PublishTime_6' align="center"></td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_7' align="center"></td>
+        <td id = 'AQI_7' align="center"></td>
+        <td id = 'Pollutant_7' align="center"></td>
+        <td id = 'Status_7' align='center'></td>
+        <td id = 'SO2_7' align='center'></td>
+        <td id = 'CO_7' align="center"></td>
+        <td id = 'Wind_7' align="center"></td>
+        <td id = 'O3_7' align="center"></td>
+        <td id = 'NO_7' align="center"></td>
+        <td id = 'PM2.5_7' align="center"></td>
+        <td id = 'PM10_7' align="center"></td>
+        <td id = 'PublishTime_7' align="center"></td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_8' align="center"></td>
+        <td id = 'AQI_8' align="center"></td>
+        <td id = 'Pollutant_8' align="center"></td>
+        <td id = 'Status_8' align='center'></td>
+        <td id = 'SO2_8' align='center'></td>
+        <td id = 'CO_8' align="center"></td>
+        <td id = 'Wind_8' align="center"></td>
+        <td id = 'O3_8' align="center"></td>
+        <td id = 'NO_8' align="center"></td>
+        <td id = 'PM2.5_8' align="center"></td>
+        <td id = 'PM10_8' align="center"></td>
+        <td id = 'PublishTime_8' align="center"></td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_9' align="center"></td>
+        <td id = 'AQI_9' align="center"></td>
+        <td id = 'Pollutant_9' align="center"></td>
+        <td id = 'Status_9' align='center'></td>
+        <td id = 'SO2_9' align='center'></td>
+        <td id = 'CO_9' align="center"></td>
+        <td id = 'Wind_9' align="center"></td>
+        <td id = 'O3_9' align="center"></td>
+        <td id = 'NO_9' align="center"></td>
+        <td id = 'PM2.5_9' align="center"></td>
+        <td id = 'PM10_9' align="center"></td>
+        <td id = 'PublishTime_9' align="center"></td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_10' align="center"></td>
+        <td id = 'AQI_10' align="center"></td>
+        <td id = 'Pollutant_10' align="center"></td>
+        <td id = 'Status_10' align='center'></td>
+        <td id = 'SO2_10' align='center'></td>
+        <td id = 'CO_10' align="center"></td>
+        <td id = 'Wind_10' align="center"></td>
+        <td id = 'O3_10' align="center"></td>
+        <td id = 'NO_10' align="center"></td>
+        <td id = 'PM2.5_10' align="center"></td>
+        <td id = 'PM10_10' align="center"></td>
+        <td id = 'PublishTime_10' align="center"></td>
+      </tr>
+      <tr>
+        <td id = 'SiteName_11' align="center"></td>
+        <td id = 'AQI_11' align="center"></td>
+        <td id = 'Pollutant_11' align="center"></td>
+        <td id = 'Status_11' align='center'></td>
+        <td id = 'SO2_11' align='center'></td>
+        <td id = 'CO_11' align="center"></td>
+        <td id = 'Wind_11' align="center"></td>
+        <td id = 'O3_11' align="center"></td>
+        <td id = 'NO_11' align="center"></td>
+        <td id = 'PM2.5_11' align="center"></td>
+        <td id = 'PM10_11' align="center"></td>
+        <td id = 'PublishTime_11' align="center"></td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
