@@ -1,0 +1,236 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    tools:context="com.openweather.airnews.Fragment.Now2Fragment"
+    android:background="@mipmap/bg1">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/round_box">
+
+        <TextView
+            android:id="@+id/tv_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/tv_condition"
+            android:textColor="#fff"
+
+            android:textSize="20sp" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="220dp"
+            android:layout_height="0.5dp"
+            android:layout_alignLeft="@+id/tv_condition"
+            android:layout_alignStart="@+id/tv_condition"
+            android:layout_below="@+id/tv_condition"
+            android:background="#fff" />
+
+        <com.openweather.airnews.View.TemperatureView
+            android:id="@+id/temperatureView"
+            android:layout_width="wrap_content"
+            android:layout_height="170dp"
+            android:layout_alignTop="@+id/tv_condition"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/view"
+            android:layout_toRightOf="@+id/view" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/temperatureView"
+            android:layout_alignLeft="@+id/view"
+            android:layout_alignStart="@+id/view"
+            android:layout_marginBottom="19dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvChill"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="台北市"
+                android:textColor="#fff"
+
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/tv_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvLocation"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:text="15°C"
+                android:textColor="#fff"
+                android:textSize="30sp" />
+
+            <TableRow
+                android:id="@+id/tableRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_low"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_temp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="1dp"
+                    android:text="12°C"
+                    android:textColor="#fff"
+                    android:textSize="20sp" />
+
+                <View
+
+                    android:id="@+id/view2"
+                    android:layout_width="2dp"
+                    android:layout_height="20dp"
+                    android:layout_alignTop="@+id/tv_low"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/tv_low"
+                    android:layout_toRightOf="@+id/tv_low"
+                    android:background="#fff" />
+
+                <TextView
+                    android:id="@+id/tv_high"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_temp"
+
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_toRightOf="@+id/view"
+                    android:text="19°C"
+                    android:textColor="#fff"
+                    android:textSize="20sp" />
+            </TableRow>
+
+        </LinearLayout>
+
+        <com.github.pwittchen.weathericonview.WeatherIconView
+            android:id="@+id/my_weather_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view"
+            android:layout_toLeftOf="@+id/temperatureView"
+            android:layout_toStartOf="@+id/temperatureView"
+            custom:weatherIconColor="@android:color/black"
+            custom:weatherIconResource="@string/wi_day_sunny_overcast"
+            custom:weatherIconSize="70" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutAQI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_box">
+
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="15dp"
+            custom:arc_bottom_text="0                500"
+            custom:arc_bottom_text_size="14dp"
+            custom:arc_finished_color="#1561bf"
+            custom:arc_max="500"
+            custom:arc_progress="54"
+            custom:arc_stroke_width="6dp"
+            custom:arc_suffix_text=" "
+            custom:arc_suffix_text_padding="17dp"
+            custom:arc_text_color="#FFF"
+            custom:arc_text_size="70dp"
+            custom:arc_unfinished_color="#e0eeff" />
+
+        <TextView
+            android:id="@+id/tvPM25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@+id/arc_progress"
+            android:layout_toRightOf="@+id/arc_progress"
+            android:text="空氣指標\nAQI"
+            android:textColor="#fff"
+            android:textSize="30sp" />
+
+        <RelativeLayout
+            android:id="@+id/AQIrelativeLayout"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/tvPM25"
+            android:layout_alignRight="@+id/tvPM25"
+            android:layout_below="@+id/tvPM25"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/round_box_air3">
+
+            <TextView
+                android:id="@+id/tvStr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="高"
+                android:textColor="#0d0d0d"
+                android:textSize="20dp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tvSiteName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvNormalsuggest"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:text="測站: 台南"
+        android:textSize="10sp" />
+    <TextView
+        android:id="@+id/tvPublishtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSiteName"
+        android:layout_gravity="center_horizontal"
+        android:text="最後更新時間: 2017-04-26 12:01"
+        android:textSize="10sp" />
+
+</LinearLayout>
+
+
+</FrameLayout>

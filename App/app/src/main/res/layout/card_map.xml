@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mapRelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+
+    <com.andy6804tw.zoomimageviewlibrary.ZoomImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+    <TableRow
+        android:id="@+id/tableAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView">
+
+        <TextView
+            android:id="@+id/tvtvStatus1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全台"
+            android:textColor="@color/tvStatus1" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" | "
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/tvtvStatus2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="地區"
+            android:textColor="@color/tvStatus2" />
+    </TableRow>
+</RelativeLayout>

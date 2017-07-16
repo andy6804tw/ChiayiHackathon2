@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">空汙小幫手</string>
+
+    <string name="tv_condition">目前狀態</string>
+    <string name="tvChill">體感溫度: </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="pull_down_refresh_label">下拉可以刷新</string>
+    <string name="pull_down_release_label">鬆開立即刷新</string>
+    <string name="pull_down_refreshing_label">正在刷新數據</string>
+    <string name="pm_describes_1">良好</string>
+    <string name="pm_describes_2">普通</string>
+    <string name="pm_describes_3">對敏感族群不健康</string>
+    <string name="pm_describes_4">對所有族群不健康</string>
+    <string name="pm_describes_5">非常不健康</string>
+    <string name="pm_describes_6">危害</string>
+</resources>
