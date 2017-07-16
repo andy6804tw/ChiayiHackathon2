@@ -1,6 +1,8 @@
 # ChiayiHackathon2
 2017 嘉義黑蚵松(地方開放資料黑克松-環境汙染)
 
+## App Screenshot 
+<img src="Screenshot/20170716_124745_edited.gif" width="300">
 
 ```
   台灣是個數據開放的社會，我們以最貼近民眾的方向去思考，決定撈取天氣環境的公開資料，此外由於現今是人手一機的時代，
